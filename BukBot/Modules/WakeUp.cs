@@ -1,35 +1,32 @@
 ﻿using Discord.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using Discord.WebSocket;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BukBot.Modules
 {
-    public class Roll : ModuleBase<SocketCommandContext>
+    public class WakeUp : ModuleBase<SocketCommandContext>
     {
         /// <summary>
-        /// Rolls user from one channel to second channel,
+        /// Moves user around channels to wake him up from being AFK,
+        /// Example: 
         /// </summary>
-        /// <param name="rollArgs">
+        /// <param name="commandArgs">
         /// rollArgs[0] is username of user to be rolled
         /// rollArgs[1] is name of channel to move user to it
         /// </param>
         /// <returns></returns>
-        [Command("Roll")]
-        public async Task RollUser(params string[] rollArgs)
+        [Command("WakeUp")]
+        public async Task WakeUpUser(params string[] commandArgs)
         {
-            if (rollArgs.Length != 2)
+            if (commandArgs.Length != 2)
             {
-                await ReplyAsync("Dzban, @BukBot Roll {osoba} {kanał do}");
+                await ReplyAsync("Dzban, $WakeUp {osoba} {kanał do}");
                 return;
             }
 
-            var userFromMessage = rollArgs[0];
-            var destinationChannelFromMessage = rollArgs[1];
+            var userFromMessage = commandArgs[0];
+            var destinationChannelFromMessage = commandArgs[1];
 
             var user = Context.Guild.Users.FirstOrDefault(u => u.Username == userFromMessage);
             if (!await ValidateObjectIfItsNotNull(user, "Dzban, taki user nie istnieje na serwerze")) return;

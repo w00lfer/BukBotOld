@@ -36,7 +36,10 @@ namespace BukBot
             var userMessage = socketMessage as SocketUserMessage;
             if (userMessage is null) return;
 
-            if (!userMessage.HasMentionPrefix(_client.CurrentUser, ref argPos)) return;
+            if (!(userMessage.HasMentionPrefix(_client.CurrentUser, ref argPos) ||
+                userMessage.HasCharPrefix('$', ref argPos) ||
+                userMessage.Author.IsBot))
+                return;
 
             var context = new SocketCommandContext(_client, userMessage);
             var result = await _commandService.ExecuteAsync(context, argPos, _services); 

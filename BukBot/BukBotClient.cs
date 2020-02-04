@@ -26,7 +26,7 @@ namespace BukBot
             _commandService = commandService ?? new CommandService(new CommandServiceConfig
             {
                 LogLevel = LogSeverity.Verbose,
-                CaseSensitiveCommands = false
+                CaseSensitiveCommands = false    
             });
             _logger = new Logger();
         }
