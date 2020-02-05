@@ -7,6 +7,8 @@ using BukBot.Services;
 using Discord.Addons.Interactive;
 using Microsoft.Extensions.DependencyInjection;
 using Victoria;
+using BukBot.Modules;
+using System.Linq;
 
 namespace BukBot
 {
@@ -14,7 +16,7 @@ namespace BukBot
     {
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commandService;
-        private readonly Logger _logger;
+        private readonly LogService _logger;
         private IServiceProvider _services;
 
         public BukBotClient(DiscordSocketClient client = null, CommandService commandService = null)
@@ -30,7 +32,7 @@ namespace BukBot
                 LogLevel = LogSeverity.Verbose,
                 CaseSensitiveCommands = false    
             });
-            _logger = new Logger();
+            _logger = new LogService();
         }
 
         public async Task InitializeAsync()
@@ -41,8 +43,8 @@ namespace BukBot
             _services = SetupServices();
             var commandHandler = new CommandHandler(_client, _commandService, _services);
             await commandHandler.InitializeAsync();
-          //  var memberAssigmentService = new MemberAssignmentService(_client, 2);
-          //  memberAssigmentService.Initialize();
+            var memberAssigmentService = new MemberAssignmentService(_client, "dupa");
+            await memberAssigmentService.InitializeAsync();
 
             await Task.Delay(-1);
         }
@@ -52,7 +54,7 @@ namespace BukBot
             .AddSingleton(_commandService)
             .AddSingleton<LavaNode>()
             .AddSingleton<InteractiveService>()
-            //.AddSingleton<MemberAssignmentService>()
+            .AddSingleton<MemberAssignmentService>()
             .BuildServiceProvider();
     }
 }

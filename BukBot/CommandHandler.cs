@@ -1,4 +1,5 @@
-﻿using Discord.Commands;
+﻿using BukBot.Modules;
+using Discord.Commands;
 using Discord.WebSocket;
 using System;
 using System.Reflection;
@@ -11,14 +12,14 @@ namespace BukBot
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commandService;
         private readonly IServiceProvider _services;
-        private readonly Logger _logger;
+        private readonly LogService _logger;
 
         public CommandHandler(DiscordSocketClient client, CommandService commandService, IServiceProvider services)
         {
             _client = client;
             _commandService = commandService;
             _services = services;
-            _logger = new Logger();
+            _logger = new LogService();
         }
 
         public async Task InitializeAsync()
@@ -42,7 +43,8 @@ namespace BukBot
                 return;
 
             var context = new SocketCommandContext(_client, userMessage);
-            var result = await _commandService.ExecuteAsync(context, argPos, _services); 
+            if (await _commandService.ExecuteAsync(context, argPos, _services) is var result && !result.IsSuccess)
+                await context.Channel.SendMessageAsync(result.ErrorReason);
         }
     }
 }

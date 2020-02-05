@@ -1,4 +1,5 @@
-﻿using Discord.Commands;
+﻿using BukBot.PreconditionAttributes;
+using Discord.Commands;
 using Discord.WebSocket;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,26 +17,28 @@ namespace BukBot.Modules
         /// rollArgs[1] is name of channel to move user to it
         /// </param>
         /// <returns></returns>
+        ///
+       // [RequireUserPermission(GuildPermission.Administrator, ErrorMessage = "Nie masz odpowiedniej rangi")]
+        [RequireRole("dupa")]
         [Command("WakeUp")]
-        public async Task WakeUpUser(params string[] commandArgs)
+        [Summary("wake me up! wake me up inside!")]
+        [Remarks("wake me up! wake me up inside!")]
+        public async Task WakeUpUserAsync(params string[] commandArgs)
         {
-            if (commandArgs.Length != 2)
+            if (commandArgs?.Length != 2)
             {
                 await ReplyAsync("Dzban, $WakeUp {osoba} {kanał do}");
                 return;
             }
 
-            var userFromMessage = commandArgs[0];
-            var destinationChannelFromMessage = commandArgs[1];
-
-            var user = Context.Guild.Users.FirstOrDefault(u => u.Username == userFromMessage);
-            if (!await ValidateObjectIfItsNotNull(user, "Dzban, taki user nie istnieje na serwerze")) return;
+            var user = Context.Guild.Users.FirstOrDefault(u => u.Username == commandArgs[0]);
+            if (!await ValidateObjectIfItsNotNullAsync(user, "Dzban, taki user nie istnieje na serwerze")) return;
 
             var originChannel = user.VoiceChannel;
-            if (!await ValidateObjectIfItsNotNull(originChannel, "Dzban, usera nie jest na żadnym z kanałów głosowyc")) return;
+            if (!await ValidateObjectIfItsNotNullAsync(originChannel, "Dzban, usera nie jest na żadnym z kanałów głosowyc")) return;
 
-            var destinationChannel = Context.Guild.VoiceChannels.FirstOrDefault(c => c.Name == destinationChannelFromMessage);
-            if (!await ValidateObjectIfItsNotNull(destinationChannel, "Dzban, taki kanał na serwerze nie istnieje")) return;
+            var destinationChannel = Context.Guild.VoiceChannels.FirstOrDefault(c => c.Name == commandArgs[1]);
+            if (!await ValidateObjectIfItsNotNullAsync(destinationChannel, "Dzban, taki kanał na serwerze nie istnieje")) return;
             
             if (originChannel.Name == destinationChannel.Name)
             {
@@ -43,10 +46,10 @@ namespace BukBot.Modules
                 return;
             }
 
-            await MoveUserAroundChannels(user, originChannel, destinationChannel);
+            await MoveUserAroundChannelsAsync(user, originChannel, destinationChannel);
         }
 
-        private async Task MoveUserAroundChannels(SocketGuildUser user, SocketVoiceChannel originChannel, SocketVoiceChannel destinationChannel, int multiplier = 5)
+        private async Task MoveUserAroundChannelsAsync(SocketGuildUser user, SocketVoiceChannel originChannel, SocketVoiceChannel destinationChannel, int multiplier = 5)
         {
             for (int i = 0; i < multiplier; i++)
             {
@@ -55,7 +58,7 @@ namespace BukBot.Modules
             }
         }
 
-        private async Task<bool> ValidateObjectIfItsNotNull(object objectToCheck, string errorMessage)
+        private async Task<bool> ValidateObjectIfItsNotNullAsync(object objectToCheck, string errorMessage)
         {
             if (objectToCheck == null)
             {

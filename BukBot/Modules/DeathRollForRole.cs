@@ -10,7 +10,7 @@ namespace BukBot.Modules
 	public class DeathRollForRole : InteractiveBase<SocketCommandContext>
 	{
 		[Command("DeathRollForRole", RunMode = RunMode.Async)]
-		public async Task DeathRollForRoleBetweenUsers(params string[] commandArgs)
+		public async Task DeathRollForRoleBetweenUsersAsync(params string[] commandArgs)
 		{
 			if (commandArgs?.Length != 4)
 			{
@@ -18,25 +18,22 @@ namespace BukBot.Modules
 				return;
 			}
 
-			var firstUserFromMessage = commandArgs[0];
-			var secondUserFromMessage = commandArgs[1];
-			var maxRollFromMessage = commandArgs[2];
 			var roleFromMessage = commandArgs[3];
 
-			var firstUser = Context.Guild.Users.FirstOrDefault(u => u.Username == firstUserFromMessage);
-			if (!await ValidateObjectIfItsNotNull(firstUserFromMessage, "Dzban, taki user nie istnieje na serwerze")) return;
+			var firstUser = Context.Guild.Users.FirstOrDefault(u => u.Username == commandArgs[0]);
+			if (!await ValidateObjectIfItsNotNullAsync(firstUser, "Dzban, taki user nie istnieje na serwerze")) return;
 
-			var secondUser = Context.Guild.Users.FirstOrDefault(u => u.Username == secondUserFromMessage);
-			if (!await ValidateObjectIfItsNotNull(secondUserFromMessage, "Dzban, taki user nie istnieje na serwerze")) return;
+			var secondUser = Context.Guild.Users.FirstOrDefault(u => u.Username == commandArgs[1]);
+			if (!await ValidateObjectIfItsNotNullAsync(secondUser, "Dzban, taki user nie istnieje na serwerze")) return;
 
-			if (!int.TryParse(maxRollFromMessage, out int maxRoll) && maxRoll <= 1)
+			if (!int.TryParse(commandArgs[2], out int maxRoll) && maxRoll <= 1)
 			{
 				await ReplyAsync("Dzban, musisz podać liczbę naturalną większą od 1");
 				return;
 			}
-			await PerformDeathRoll(firstUser, secondUser, maxRoll, roleFromMessage);
+			await PerformDeathRollAsync(firstUser, secondUser, maxRoll, commandArgs[3]);
 		}
-		private async Task<bool> ValidateObjectIfItsNotNull(object objectToCheck, string errorMessage)
+		private async Task<bool> ValidateObjectIfItsNotNullAsync(object objectToCheck, string errorMessage)
 		{
 			if (objectToCheck == null)
 			{
@@ -45,7 +42,7 @@ namespace BukBot.Modules
 			}
 			return true;
 		}
-		private async Task PerformDeathRoll(SocketGuildUser currentRoller, SocketGuildUser nextRoller, int maxRoll, string role)
+		private async Task PerformDeathRollAsync(SocketGuildUser currentRoller, SocketGuildUser nextRoller, int maxRoll, string role)
 		{
 			var rnd = new Random();
             await ReplyAsync($"Zaczynamy rollowanie, startuje: {currentRoller}");
@@ -58,7 +55,7 @@ namespace BukBot.Modules
 					await ReplyAsync($"{currentRoller.Username} roll za: {maxRoll}");
 					ChangeRollers(ref currentRoller, ref nextRoller);
 				}
-				else await ReplyAsync($"{currentRoller.Username} dzban, musisz wpisać Roll");
+				else await ReplyAsync($"{currentRoller.Username} dzban, musi wpisać Roll");
 			}
 			await ReplyAsync($"{currentRoller.Mention} wygrał rolę: {role}");
 		}
