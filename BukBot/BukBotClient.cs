@@ -3,6 +3,8 @@ using Discord.WebSocket;
 using Discord;
 using System.Threading.Tasks;
 using System;
+using BukBot.Services;
+using Discord.Addons.Interactive;
 using Microsoft.Extensions.DependencyInjection;
 using Victoria;
 
@@ -39,6 +41,8 @@ namespace BukBot
             _services = SetupServices();
             var commandHandler = new CommandHandler(_client, _commandService, _services);
             await commandHandler.InitializeAsync();
+          //  var memberAssigmentService = new MemberAssignmentService(_client, 2);
+          //  memberAssigmentService.Initialize();
 
             await Task.Delay(-1);
         }
@@ -47,6 +51,8 @@ namespace BukBot
             .AddSingleton(_client)
             .AddSingleton(_commandService)
             .AddSingleton<LavaNode>()
+            .AddSingleton<InteractiveService>()
+            //.AddSingleton<MemberAssignmentService>()
             .BuildServiceProvider();
     }
 }

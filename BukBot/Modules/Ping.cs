@@ -1,7 +1,4 @@
 ﻿using Discord.Commands;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BukBot.Modules
@@ -14,4 +11,5 @@ namespace BukBot.Modules
             await ReplyAsync("Pong");
         }
     }
+
 }
