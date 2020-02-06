@@ -1,4 +1,5 @@
-﻿using Discord;
+﻿using BukBot.Enums;
+using Discord;
 using Discord.Addons.Interactive;
 using Discord.Commands;
 using System;
@@ -10,7 +11,9 @@ namespace BukBot.Modules
     [Group("Clean")]
     public class Clean : InteractiveBase<SocketCommandContext>
     {
-        [Command]
+        [Command("")]
+        [Summary("Komenda służąca do czyszczenia czatu z wiadomości z ostatnich x minut/godzn/dni/tygodni")]
+        [Remarks("$Clean {Week/Day/Hour/Minute} {ilość}")]
         public async Task DefaultCleanAsync(params string[] commandArgs)
         {
             if (commandArgs?.Length != 2)
@@ -19,7 +22,7 @@ namespace BukBot.Modules
                 return;
             }
 
-            if (!Enum.TryParse<TimeStampEnum>(commandArgs[0], out var timeStamp))
+            if (!(Enum.TryParse<TimeStampEnum>(commandArgs[0], out var timeStamp) && Enum.IsDefined(typeof(TimeStampEnum), timeStamp)))
             {
                 await ReplyAsync("Dzban, podałeś zły enum, prawidłowe to: Week, Day, Hour, Minute");
             }
@@ -45,6 +48,8 @@ namespace BukBot.Modules
         }
 
         [Command("Bot")]
+        [Summary("Komenda służąca do czyszczenia czatu, na ktorym została wywołana ze wszystkich wiadomości bota")]
+        [Remarks("$Clean Bot")]
         public async Task CleanBotMessages()
         {
             var botUserId = Context.Client.CurrentUser.Id;
@@ -53,22 +58,14 @@ namespace BukBot.Modules
                 await Context.Channel.GetMessagesAsync(limit: 10000).FlattenAsync()).Where(m => m.Author.Id <= botUserId));
         }
 
-        private int GetMinutesFromEnum(TimeStampEnum timeStamp, int amount) =>
+        private double GetMinutesFromEnum(TimeStampEnum timeStamp, int amount) =>
             timeStamp switch
             {
-                TimeStampEnum.Week => TimeSpan.FromDays(7 * amount).Minutes,
-                TimeStampEnum.Day => TimeSpan.FromDays(amount).Minutes,
-                TimeStampEnum.Hour => TimeSpan.FromHours(amount).Minutes,
-                TimeStampEnum.Minute => TimeSpan.FromMinutes(amount).Minutes,
+                TimeStampEnum.Week => TimeSpan.FromDays(7 * amount).TotalMinutes,
+                TimeStampEnum.Day => TimeSpan.FromDays(amount).TotalMinutes,
+                TimeStampEnum.Hour => TimeSpan.FromHours(amount).TotalMinutes,
+                TimeStampEnum.Minute => TimeSpan.FromMinutes(amount).TotalMinutes,
                 _ => throw new ArgumentException(message: "zły enum"),
             };
-
-        internal enum TimeStampEnum
-        {
-            Week,
-            Day,
-            Hour,
-            Minute
-        }
     }
 }

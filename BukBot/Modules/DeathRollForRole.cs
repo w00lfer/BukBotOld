@@ -10,6 +10,8 @@ namespace BukBot.Modules
 	public class DeathRollForRole : InteractiveBase<SocketCommandContext>
 	{
 		[Command("DeathRollForRole", RunMode = RunMode.Async)]
+		[Summary("Komenda do gry w death roll. Gra polega na rollowaniu przez graczy coraz to mniejszych liczb, aż któryś z nich wylosuje 1 i przegra")]
+		[Remarks("$DeathRollForRole {gracz1} {gracz2} {maxRoll} {rola}")]
 		public async Task DeathRollForRoleBetweenUsersAsync(params string[] commandArgs)
 		{
 			if (commandArgs?.Length != 4)

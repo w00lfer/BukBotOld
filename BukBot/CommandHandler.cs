@@ -1,4 +1,4 @@
-﻿using BukBot.Modules;
+﻿using BukBot.Services;
 using Discord.Commands;
 using Discord.WebSocket;
 using System;
@@ -27,6 +27,7 @@ namespace BukBot
             await _commandService.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
             _commandService.Log += _logger.LogAsync;
             _client.MessageReceived += HandleMessageAsync;
+
         }
 
         private async Task HandleMessageAsync(SocketMessage socketMessage)
@@ -37,8 +38,7 @@ namespace BukBot
             var userMessage = socketMessage as SocketUserMessage;
             if (userMessage is null) return;
 
-            if (!(userMessage.HasMentionPrefix(_client.CurrentUser, ref argPos) ||
-                userMessage.HasCharPrefix('$', ref argPos) ||
+            if (!(userMessage.HasCharPrefix('$', ref argPos) ||
                 userMessage.Author.IsBot))
                 return;
 

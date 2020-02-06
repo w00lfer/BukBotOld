@@ -1,4 +1,5 @@
-﻿using BukBot.PreconditionAttributes;
+﻿using BukBot.Enums;
+using BukBot.PreconditionAttributes;
 using Discord.Commands;
 using Discord.WebSocket;
 using System.Linq;
@@ -8,21 +9,10 @@ namespace BukBot.Modules
 {
     public class WakeUp : ModuleBase<SocketCommandContext>
     {
-        /// <summary>
-        /// Moves user around channels to wake him up from being AFK,
-        /// Example: 
-        /// </summary>
-        /// <param name="commandArgs">
-        /// rollArgs[0] is username of user to be rolled
-        /// rollArgs[1] is name of channel to move user to it
-        /// </param>
-        /// <returns></returns>
-        ///
-       // [RequireUserPermission(GuildPermission.Administrator, ErrorMessage = "Nie masz odpowiedniej rangi")]
-        [RequireRole("dupa")]
+        [RequireRole(RoleTypeEnum.Dupa)]
         [Command("WakeUp")]
-        [Summary("wake me up! wake me up inside!")]
-        [Remarks("wake me up! wake me up inside!")]
+        [Summary("Komenda do przerzucania osoby")]
+        [Remarks("$WakeUp {osoba} {kanał do}")]
         public async Task WakeUpUserAsync(params string[] commandArgs)
         {
             if (commandArgs?.Length != 2)

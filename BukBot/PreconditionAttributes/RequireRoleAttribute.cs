@@ -1,4 +1,5 @@
-﻿using Discord;
+﻿using BukBot.Enums;
+using BukBot.Helpers;
 using Discord.Commands;
 using Discord.WebSocket;
 using System;
@@ -11,10 +12,7 @@ namespace BukBot.PreconditionAttributes
     {
         private readonly string _roleName;
 
-        public RequireRoleAttribute(string roleName)
-        {
-            _roleName = roleName;
-        }
+        public RequireRoleAttribute(RoleTypeEnum roleType) => _roleName = RoleFactory.GetRoleName(roleType);
 
         public override async Task<PreconditionResult> CheckPermissionsAsync(ICommandContext context,
             CommandInfo command, IServiceProvider services)

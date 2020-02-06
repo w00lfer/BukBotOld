@@ -1,14 +1,14 @@
-﻿using Discord.Commands;
-using Discord.WebSocket;
-using Discord;
-using System.Threading.Tasks;
-using System;
+﻿using BukBot.Helpers;
+using BukBot.Models;
 using BukBot.Services;
+using Discord;
 using Discord.Addons.Interactive;
+using Discord.Commands;
+using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Threading.Tasks;
 using Victoria;
-using BukBot.Modules;
-using System.Linq;
 
 namespace BukBot
 {
@@ -18,6 +18,7 @@ namespace BukBot
         private readonly CommandService _commandService;
         private readonly LogService _logger;
         private IServiceProvider _services;
+        private Config _config;
 
         public BukBotClient(DiscordSocketClient client = null, CommandService commandService = null)
         {
@@ -38,12 +39,13 @@ namespace BukBot
         public async Task InitializeAsync()
         {
             _client.Log += _logger.LogAsync;
-            await _client.LoginAsync(TokenType.Bot, "NjczODIwNzU4MjQ5ODMyNDQ4.Xjfmow.HP8YahBBZmH_LAF9n0AFr6tmlUc");
-            await _client.StartAsync();
+            _config = await ConfigService.GetConfigAsync(@"C:\Users\apaz02\Desktop\config.json");
             _services = SetupServices();
+            await _client.LoginAsync(TokenType.Bot, _config.Token);
+            await _client.StartAsync();
             var commandHandler = new CommandHandler(_client, _commandService, _services);
             await commandHandler.InitializeAsync();
-            var memberAssigmentService = new MemberAssignmentService(_client, "dupa");
+            var memberAssigmentService = new MemberAssignmentService(_client, _config.MemberAssignmentRole);
             await memberAssigmentService.InitializeAsync();
 
             await Task.Delay(-1);

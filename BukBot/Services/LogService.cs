@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BukBot
+namespace BukBot.Services
 {
     public class LogService
     {
