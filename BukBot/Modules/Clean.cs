@@ -25,6 +25,7 @@ namespace BukBot.Modules
             if (!(Enum.TryParse<TimeStampEnum>(commandArgs[0], out var timeStamp) && Enum.IsDefined(typeof(TimeStampEnum), timeStamp)))
             {
                 await ReplyAsync("Dzban, podałeś zły enum, prawidłowe to: Week, Day, Hour, Minute");
+                return;
             }
 
             if (!int.TryParse(commandArgs[1], out int amount) && amount < 1)

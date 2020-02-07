@@ -12,20 +12,17 @@ namespace BukBot
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commandService;
         private readonly IServiceProvider _services;
-        private readonly LogService _logger;
 
         public CommandHandler(DiscordSocketClient client, CommandService commandService, IServiceProvider services)
         {
             _client = client;
             _commandService = commandService;
             _services = services;
-            _logger = new LogService();
         }
 
         public async Task InitializeAsync()
         {
             await _commandService.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
-            _commandService.Log += _logger.LogAsync;
             _client.MessageReceived += HandleMessageAsync;
 
         }

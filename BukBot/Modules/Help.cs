@@ -21,10 +21,10 @@ namespace BukBot.Modules
             embedBuilder.AddField("Ogólne", "klamry {} oznaczają parametr. Parametr, który posiada spację trzeba wziąć w cudzysłów **\"przykładowy parametr ze spacją\"** \n Wszelkie problemy i bugi zgłaszaj do Boka(**Woolfer#5654**)");
             foreach (var command in commands)
             {
-                var commandSummary = command.Summary ?? "Brak opisu komendy\n";
-                var commandSyntax = command.Remarks ?? "Brak składni komendy";
                 var commandName = command.Module.Group != null ? $"{command.Module.Group} {command.Name}" : command.Name;
-                embedBuilder.AddField($"__{commandName}__", $"**{commandSyntax}**\n{commandSummary}");
+                var commandSyntax = command.Remarks ?? "Brak składni komendy";
+                var commandSummary = command.Summary ?? "Brak opisu komendy\n";
+                embedBuilder.AddField($"__{commandName}__ ", $"**{commandSyntax}**\n{commandSummary}");
             }
             await ReplyAsync("Lista komend wraz z ich opisem oraz składnią", false, embedBuilder.Build());
         }

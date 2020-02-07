@@ -4,13 +4,20 @@ using System.Threading.Tasks;
 
 namespace BukBot.Services
 {
-    public class ConfigService
+    public static class ConfigService
     {
-        public static async Task<Config> GetConfigAsync(string configPath)
+        public static async Task<ServerConfig> GetConfigAsync()
         {
-            using (StreamReader sr = File.OpenText(configPath))
+            using (StreamReader sr = File.OpenText(@"C:\Users\apaz02\Desktop\ServerConfig.json")) // TODO reading from env var
             {
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<Config>(await sr.ReadToEndAsync());
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<ServerConfig>(await sr.ReadToEndAsync());
+            }
+        }
+        public static async Task<LogPaths> GetLogPathsAsync()
+        {
+            using (StreamReader sr = File.OpenText(@"C:\Users\apaz02\Desktop\LogPaths.json")) // TODO reading from env var
+            {
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<LogPaths>(await sr.ReadToEndAsync());
             }
         }
     }

@@ -18,7 +18,7 @@ namespace BukBot
         private readonly CommandService _commandService;
         private readonly LogService _logger;
         private IServiceProvider _services;
-        private Config _config;
+        private ServerConfig _serverConfig;
 
         public BukBotClient(DiscordSocketClient client = null, CommandService commandService = null)
         {
@@ -33,19 +33,19 @@ namespace BukBot
                 LogLevel = LogSeverity.Verbose,
                 CaseSensitiveCommands = false    
             });
-            _logger = new LogService();
+            _logger = new LogService(_client, _commandService);
         }
 
         public async Task InitializeAsync()
         {
-            _client.Log += _logger.LogAsync;
-            _config = await ConfigService.GetConfigAsync(@"C:\Users\apaz02\Desktop\config.json");
+            _serverConfig = await ConfigService.GetConfigAsync();
             _services = SetupServices();
-            await _client.LoginAsync(TokenType.Bot, _config.Token);
+            await _logger.StartLoggingAsync();
+            await _client.LoginAsync(TokenType.Bot, _serverConfig.Token);
             await _client.StartAsync();
             var commandHandler = new CommandHandler(_client, _commandService, _services);
             await commandHandler.InitializeAsync();
-            var memberAssigmentService = new MemberAssignmentService(_client, _config.MemberAssignmentRole);
+            var memberAssigmentService = new MemberAssignmentService(_client, _serverConfig.MemberAssignmentRole);
             await memberAssigmentService.InitializeAsync();
 
             await Task.Delay(-1);
@@ -54,9 +54,7 @@ namespace BukBot
         private IServiceProvider SetupServices() => new ServiceCollection()
             .AddSingleton(_client)
             .AddSingleton(_commandService)
-            .AddSingleton<LavaNode>()
             .AddSingleton<InteractiveService>()
-            .AddSingleton<MemberAssignmentService>()
             .BuildServiceProvider();
     }
 }
