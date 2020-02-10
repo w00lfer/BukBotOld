@@ -2,10 +2,10 @@
 {
     public enum RoleTypeEnum
     {
-        Dupa,
         Buk,
         ZastepcaBoka,
         Pociong,
         KrólowaZiemniaków,
+        Liga
     }
 }

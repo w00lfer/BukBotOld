@@ -7,16 +7,16 @@ using Discord.Addons.Interactive;
 
 namespace BukBot.Modules
 {
-	public class DeathRollForRole : InteractiveBase<SocketCommandContext>
+	public class DeathRoll : InteractiveBase<SocketCommandContext>
 	{
-		[Command("DeathRollForRole", RunMode = RunMode.Async)]
+		[Command("DeathRoll", RunMode = RunMode.Async)]
 		[Summary("Komenda do gry w death roll. Gra polega na rollowaniu przez graczy coraz to mniejszych liczb, aż któryś z nich wylosuje 1 i przegra")]
-		[Remarks("$DeathRollForRole {gracz1} {gracz2} {maxRoll} {rola}")]
-		public async Task DeathRollForRoleBetweenUsersAsync(params string[] commandArgs)
+		[Remarks("$DeathRoll {gracz1} {gracz2} {maxRoll} {nagroda}")]
+		public async Task StartDeathRoll(params string[] commandArgs)
 		{
 			if (commandArgs?.Length != 4)
 			{
-				await ReplyAsync("Dzban, $DeathRollForRole {osoba1} {osoba2} {maxRoll} {rola}");
+				await ReplyAsync("Dzban, $DeathRollForRole {osoba1} {osoba2} {maxRoll} {nagroda}");
 				return;
 			}
 
@@ -33,7 +33,7 @@ namespace BukBot.Modules
 				await ReplyAsync("Dzban, musisz podać liczbę naturalną większą od 1");
 				return;
 			}
-			await PerformDeathRollAsync(firstUser, secondUser, maxRoll, commandArgs[3]);
+			await PerformDeathRollsAsync(firstUser, secondUser, maxRoll, commandArgs[3]);
 		}
 		private async Task<bool> ValidateObjectIfItsNotNullAsync(object objectToCheck, string errorMessage)
 		{
@@ -44,7 +44,7 @@ namespace BukBot.Modules
 			}
 			return true;
 		}
-		private async Task PerformDeathRollAsync(SocketGuildUser currentRoller, SocketGuildUser nextRoller, int maxRoll, string role)
+		private async Task PerformDeathRollsAsync(SocketGuildUser currentRoller, SocketGuildUser nextRoller, int maxRoll, string prize)
 		{
 			var rnd = new Random();
             await ReplyAsync($"Zaczynamy rollowanie, startuje: {currentRoller}");
@@ -59,7 +59,7 @@ namespace BukBot.Modules
 				}
 				else await ReplyAsync($"{currentRoller.Username} dzban, musi wpisać Roll");
 			}
-			await ReplyAsync($"{currentRoller.Mention} wygrał rolę: {role}");
+			await ReplyAsync($"{currentRoller.Mention} wygrał: {prize}");
 		}
 
 		private void ChangeRollers(ref SocketGuildUser currentRoller, ref SocketGuildUser nextRoller) =>

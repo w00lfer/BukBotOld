@@ -17,7 +17,10 @@ namespace BukBot.Modules
         public async Task OverallHelp()
         {
             List<CommandInfo> commands = _commandService.Commands.ToList();
-            EmbedBuilder embedBuilder = new EmbedBuilder();
+            EmbedBuilder embedBuilder = new EmbedBuilder
+            {
+                Title = "**Lista komend wraz z ich opisem oraz składnią**"
+            };
             embedBuilder.AddField("Ogólne", "klamry {} oznaczają parametr. Parametr, który posiada spację trzeba wziąć w cudzysłów **\"przykładowy parametr ze spacją\"** \n Wszelkie problemy i bugi zgłaszaj do Boka(**Woolfer#5654**)");
             foreach (var command in commands)
             {
@@ -26,7 +29,7 @@ namespace BukBot.Modules
                 var commandSummary = command.Summary ?? "Brak opisu komendy\n";
                 embedBuilder.AddField($"__{commandName}__ ", $"**{commandSyntax}**\n{commandSummary}");
             }
-            await ReplyAsync("Lista komend wraz z ich opisem oraz składnią", false, embedBuilder.Build());
+            await ReplyAsync(embed: embedBuilder.Build());
         }
     }
 }

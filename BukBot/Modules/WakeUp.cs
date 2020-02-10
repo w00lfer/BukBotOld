@@ -1,5 +1,4 @@
-﻿using BukBot.Enums;
-using BukBot.PreconditionAttributes;
+﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using System.Linq;
@@ -9,7 +8,7 @@ namespace BukBot.Modules
 {
     public class WakeUp : ModuleBase<SocketCommandContext>
     {
-        [RequireRole(RoleTypeEnum.Dupa)]
+        [RequireUserPermission(GuildPermission.Administrator)]
         [Command("WakeUp")]
         [Summary("Komenda do przerzucania osoby")]
         [Remarks("$WakeUp {osoba} {kanał do}")]

@@ -12,7 +12,7 @@ namespace BukBot.Helpers
                 RoleTypeEnum.ZastepcaBoka => "Zastepca Boka",
                 RoleTypeEnum.Pociong => "Pociong",
                 RoleTypeEnum.KrólowaZiemniaków => "Królowa ziemniaków",
-                RoleTypeEnum.Dupa => "Dupa",
+                RoleTypeEnum.Liga => "Liga",
                 _ => throw new Exception("Nie ma takiej roli")
             };
     }
