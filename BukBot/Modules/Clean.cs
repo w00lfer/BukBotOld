@@ -39,7 +39,7 @@ namespace BukBot.Modules
             var messages = (await Context.Channel.GetMessagesAsync(limit: 10000)
                 .FlattenAsync())
                 .Where(m => m.CreatedAt >= new DateTimeOffset(DateTime.Now).AddMinutes(-GetMinutesFromEnum(timeStamp, amount)));
-            if(!messages.Skip(1).Any())
+            if (!messages.Skip(1).Any())
             {
                 await ReplyAsync("Dzban, nie było żadnych wiadomości w tym przezdiale");
                 return;
@@ -59,14 +59,29 @@ namespace BukBot.Modules
                 await Context.Channel.GetMessagesAsync(limit: 10000).FlattenAsync()).Where(m => m.Author.Id <= botUserId));
         }
 
-        private double GetMinutesFromEnum(TimeStampEnum timeStamp, int amount) =>
-            timeStamp switch
+        private double GetMinutesFromEnum(TimeStampEnum timeStamp, int amount)
+        {
+            switch (timeStamp)
             {
-                TimeStampEnum.Week => TimeSpan.FromDays(7 * amount).TotalMinutes,
-                TimeStampEnum.Day => TimeSpan.FromDays(amount).TotalMinutes,
-                TimeStampEnum.Hour => TimeSpan.FromHours(amount).TotalMinutes,
-                TimeStampEnum.Minute => TimeSpan.FromMinutes(amount).TotalMinutes,
-                _ => throw new ArgumentException(message: "zły enum"),
+                case TimeStampEnum.Week:
+                    return TimeSpan.FromDays(7 * amount).TotalMinutes;
+                case TimeStampEnum.Day:
+                    return TimeSpan.FromDays(amount).TotalMinutes;
+                case TimeStampEnum.Hour:
+                    return TimeSpan.FromHours(amount).TotalMinutes;
+                case TimeStampEnum.Minute:
+                    return TimeSpan.FromMinutes(amount).TotalMinutes;
+                default:
+                    throw new Exception("Zły enum");
             };
+        }
+        //timeStamp switch
+        //{
+        //    TimeStampEnum.Week => TimeSpan.FromDays(7 * amount).TotalMinutes,
+        //    TimeStampEnum.Day => TimeSpan.FromDays(amount).TotalMinutes,
+        //    TimeStampEnum.Hour => TimeSpan.FromHours(amount).TotalMinutes,
+        //    TimeStampEnum.Minute => TimeSpan.FromMinutes(amount).TotalMinutes,
+        //    _ => throw new ArgumentException(message: "zły enum"),
+        //};
     }
 }

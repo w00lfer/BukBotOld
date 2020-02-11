@@ -8,7 +8,6 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
-using Victoria;
 
 namespace BukBot
 {
