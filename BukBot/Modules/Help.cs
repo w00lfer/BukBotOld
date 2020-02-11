@@ -26,7 +26,7 @@ namespace BukBot.Modules
             {
                 var commandName = command.Module.Group != null ? $"{command.Module.Group} {command.Name}" : command.Name;
                 var commandSyntax = command.Remarks ?? "Brak składni komendy";
-                var commandSummary = command.Summary ?? "Brak opisu komendy\n";
+                var commandSummary = command.Summary ?? "Brak opisu komendy";
                 embedBuilder.AddField($"__{commandName}__ ", $"**{commandSyntax}**\n{commandSummary}");
             }
             await ReplyAsync(embed: embedBuilder.Build());
