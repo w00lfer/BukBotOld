@@ -59,29 +59,14 @@ namespace BukBot.Modules
                 await Context.Channel.GetMessagesAsync(limit: 10000).FlattenAsync()).Where(m => m.Author.Id <= botUserId));
         }
 
-        private double GetMinutesFromEnum(TimeStampEnum timeStamp, int amount)
+        private double GetMinutesFromEnum(TimeStampEnum timeStamp, int amount) =>
+        timeStamp switch
         {
-            switch (timeStamp)
-            {
-                case TimeStampEnum.Week:
-                    return TimeSpan.FromDays(7 * amount).TotalMinutes;
-                case TimeStampEnum.Day:
-                    return TimeSpan.FromDays(amount).TotalMinutes;
-                case TimeStampEnum.Hour:
-                    return TimeSpan.FromHours(amount).TotalMinutes;
-                case TimeStampEnum.Minute:
-                    return TimeSpan.FromMinutes(amount).TotalMinutes;
-                default:
-                    throw new Exception("Zły enum");
-            };
-        }
-        //timeStamp switch
-        //{
-        //    TimeStampEnum.Week => TimeSpan.FromDays(7 * amount).TotalMinutes,
-        //    TimeStampEnum.Day => TimeSpan.FromDays(amount).TotalMinutes,
-        //    TimeStampEnum.Hour => TimeSpan.FromHours(amount).TotalMinutes,
-        //    TimeStampEnum.Minute => TimeSpan.FromMinutes(amount).TotalMinutes,
-        //    _ => throw new ArgumentException(message: "zły enum"),
-        //};
+            TimeStampEnum.Week => TimeSpan.FromDays(7 * amount).TotalMinutes,
+            TimeStampEnum.Day => TimeSpan.FromDays(amount).TotalMinutes,
+            TimeStampEnum.Hour => TimeSpan.FromHours(amount).TotalMinutes,
+            TimeStampEnum.Minute => TimeSpan.FromMinutes(amount).TotalMinutes,
+            _ => throw new ArgumentException(message: "zły enum"),
+        };
     }
 }
