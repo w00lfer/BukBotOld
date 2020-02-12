@@ -33,10 +33,9 @@ namespace BukBot.Modules
                 await ReplyAsync("Dzban, musisz podać liczbę naturalną większą lub równą 1");
                 return;
             }
-            var timestampp = (await Context.Channel.GetMessagesAsync().FlattenAsync()).FirstOrDefault();
             await ReplyAndDeleteAsync("Usuwam...", timeout: TimeSpan.FromSeconds(3));
 
-            var messages = (await Context.Channel.GetMessagesAsync(limit: 10000)
+            var messages = (await Context.Channel.GetMessagesAsync(limit: 2500)
                 .FlattenAsync())
                 .Where(m => m.CreatedAt >= new DateTimeOffset(DateTime.Now).AddMinutes(-GetMinutesFromEnum(timeStamp, amount)));
             if (!messages.Skip(1).Any())

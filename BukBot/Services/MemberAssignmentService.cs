@@ -18,9 +18,10 @@ namespace BukBot.Services
         
         public async Task InitializeAsync() => _client.UserJoined += AssignMemberAsync;
 
-
+ 
         private async Task AssignMemberAsync(SocketGuildUser guildUser)
         {
+
             var role = guildUser.Guild.Roles.Where(r => r.Name == _roleName).FirstOrDefault();
             if (role == null) return;
             await guildUser.AddRoleAsync(role);
