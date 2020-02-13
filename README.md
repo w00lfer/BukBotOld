@@ -18,7 +18,7 @@
 Buk Bot is a Discord bot written for my own Discord server. He has some fun commands but also I've implemented various command for administration. It has log service and auto role assign service.
 ### Built With
 I have built this application using:
-* [CSS](#) - to build this bot
+* [.NET Core 3.1](#) - to build this bot
 * [Discord.Net](https://github.com/discord-net/Discord.Net) - discord wrapper
 
 <!-- GETTING STARTED -->
