@@ -36,7 +36,8 @@ namespace BukBot
             if (userMessage is null) return;
 
             if (!(userMessage.HasCharPrefix('$', ref argPos) ||
-                userMessage.Author.IsBot))
+                userMessage.Author.IsBot) ||
+                userMessage.Channel.Name != "boter-czanyl")
                 return;
 
             var context = new SocketCommandContext(_client, userMessage);

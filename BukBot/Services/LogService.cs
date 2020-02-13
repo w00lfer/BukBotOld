@@ -19,7 +19,7 @@ namespace BukBot.Services
         {
             _semaphoreSlim = new SemaphoreSlim(1);
             _client = client;
-            _commandService = commandService; ;
+            _commandService = commandService;
         }
 
         public async Task StartLoggingAsync()
