@@ -24,7 +24,7 @@ namespace BukBot.Modules
             var wonItems = new List<string>();
             var rnd = new Random();
             for (int i = 0; i < repetitions; i++)
-                wonItems.Add(commandArgs[rnd.Next(1, commandArgs.Length - 1)]);
+                wonItems.Add(commandArgs[rnd.Next(1, commandArgs.Length)]);
             await ReplyAsync($"wygrane to {string.Join(" ", wonItems)}");
             return;
             

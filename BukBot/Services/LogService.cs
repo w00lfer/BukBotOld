@@ -45,12 +45,12 @@ namespace BukBot.Services
         {
             var firstAction = firstState.VoiceChannel == null ? $"Joined to {firstState.VoiceChannel}" : $"{firstState.VoiceChannel} changed to ";
             var secondAction = secondState.VoiceChannel == null ? "Disconnected" : secondState.VoiceChannel.ToString();
-            using (var file = new StreamWriter($@"{(await ConfigService.GetLogPathsAsync()).UsersVoiceChannelsActivityPath}{DateTime.Today.ToString("MMMM", CultureInfo.InvariantCulture)}.txt", true))
+            using (var file = new StreamWriter($@"{(await ConfigService.GetFilePathsAsync()).UsersVoiceChannelsActivityPath}{DateTime.Today.ToString("MMMM", CultureInfo.InvariantCulture)}.txt", true))
                 await file.WriteLineAsync($"[{DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm tt")}] {string.Format("{0,-20} {1,-25}", $"<{user.Username}>", $": ({firstAction}{secondAction})")}");
         }
         private async Task LogUserCommandsActivityToFileAsync(Optional<CommandInfo> commandInfo, ICommandContext commandContext, IResult result)
         {
-            using (var file = new StreamWriter($@"{(await ConfigService.GetLogPathsAsync()).UsersCommandsActivityPath}{DateTime.Today.ToString("MMMM", CultureInfo.InvariantCulture)}.txt", true))
+            using (var file = new StreamWriter($@"{(await ConfigService.GetFilePathsAsync()).UsersCommandsActivityPath}{DateTime.Today.ToString("MMMM", CultureInfo.InvariantCulture)}.txt", true))
                 await file.WriteLineAsync($"[{DateTime.UtcNow.ToString("MM/dd/yyyy hh:mm tt")}] {string.Format("{0,-20} {1,-100}", $"<{commandContext.User.Username}>", $": ({commandContext.Message.Content}{result.ErrorReason?? ""})")}");
         }
     }

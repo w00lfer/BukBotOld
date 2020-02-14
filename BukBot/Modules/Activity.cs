@@ -99,7 +99,7 @@ namespace BukBot.Modules
             return usedCommands;
         }
 
-        public async Task<LogPaths> GetLogPathsAsync() => await ConfigService.GetLogPathsAsync();
+        public async Task<FilesPaths> GetLogPathsAsync() => await ConfigService.GetFilePathsAsync();
     }
 }
 

@@ -1,7 +1,5 @@
 ﻿using BukBot.Models;
 using BukBot.Models.DbModels;
-using BukBot.Repositories;
-using BukBot.Repositories.Interfaces;
 using BukBot.Services;
 using Discord;
 using Discord.Addons.Interactive;
@@ -55,13 +53,10 @@ namespace BukBot
         }
 
         private IServiceProvider SetupServices() => new ServiceCollection()
-            .AddDbContext<AppDbContext>(options => options.UseNpgsql("User ID =postgres;Password=1234;Server=localhost;Port=5432;Database=BukBotDb;Integrated Security = true; Pooling=true;"))
             .AddSingleton(_client)
             .AddSingleton(_commandService)
             .AddSingleton<InteractiveService>()
-            .AddSingleton<LavaConfig>()
-            .AddSingleton<LavaNode>()
-            .AddScoped<ISoundRepository, SoundRepository>()
+            .AddSingleton(new AudioService())
             .BuildServiceProvider();
     }
 }

@@ -13,11 +13,11 @@ namespace BukBot.Services
                 return Newtonsoft.Json.JsonConvert.DeserializeObject<ServerConfig>(await sr.ReadToEndAsync());
             }
         }
-        public static async Task<LogPaths> GetLogPathsAsync()
+        public static async Task<FilesPaths> GetFilePathsAsync()
         {
-            using (StreamReader sr = File.OpenText(@"C:\Users\apaz02\Desktop\LogPaths.json")) // TODO reading from env var
+            using (StreamReader sr = File.OpenText(@"C:\Users\apaz02\Desktop\FIlesPaths.json")) // TODO reading from env var
             {
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<LogPaths>(await sr.ReadToEndAsync());
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<FilesPaths>(await sr.ReadToEndAsync());
             }
         }
     }
